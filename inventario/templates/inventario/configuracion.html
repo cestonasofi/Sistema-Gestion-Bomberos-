@@ -1,0 +1,678 @@
+{% extends "inventario/base.html" %}
+{% load static %}
+
+{% block title %}Centro de Comando - Configuración Interactiva{% endblock %}
+
+{% block extra_css %}
+        .command-center {
+            padding: 30px;
+            max-width: 1150px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            color: #f1f1f1;
+            font-size: 28px;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-bottom: 3px solid #c1121f;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        body.light-mode .section-title {
+            color: #1c1c1c;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
+        }
+
+        .control-card {
+            background-color: #121212;
+            border-radius: 10px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            border-top: 5px solid #6b6b6b;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        body.light-mode .control-card {
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.4);
+        }
+
+        .control-card.approval {
+            border-top-color: #f59e0b;
+        }
+
+        .control-card.calendar-card {
+            border-top-color: #3b82f6;
+        }
+
+        .control-card.inventory {
+            border-top-color: #10b981;
+        }
+
+        .card-header {
+            background-color: rgba(255,255,255,0.05);
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-weight: bold;
+            color: #f1f1f1;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        body.light-mode .card-header {
+            background-color: #f1f1f1;
+            color: #121212;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .info-row {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #1c1c1c;
+            padding-bottom: 8px;
+        }
+
+        body.light-mode .info-row {
+            border-bottom-color: #e2e8f0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .info-label {
+            color: #8b8b8b;
+            font-size: 13px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .info-value {
+            color: #f1f1f1;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        body.light-mode .info-value {
+            color: #1c1c1c;
+        }
+
+        .btn-update {
+            display: block;
+            width: 100%;
+            background-color: #1c1c1c;
+            color: #f1f1f1;
+            border: 1px solid #3a3a3a;
+            padding: 11px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-top: 15px;
+            transition: all 0.2s;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .btn-update:hover {
+            background-color: #3a3a3a;
+            color: #ffffff;
+        }
+
+        .btn-approve {
+            background-color: #10b981;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .btn-approve:hover {
+            background-color: #059669;
+        }
+
+        /* Widget de Calendario Funcional */
+        .calendar-widget {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .cal-day-head {
+            font-size: 11px;
+            font-weight: bold;
+            color: #8b8b8b;
+            padding: 4px 0;
+        }
+
+        .cal-day {
+            padding: 8px;
+            border-radius: 6px;
+            background: #1c1c1c;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        body.light-mode .cal-day {
+            background: #f1f5f9;
+            color: #1c1c1c;
+        }
+
+        body.light-mode .cal-day:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        body.light-mode .cal-day.active-day {
+            background: #10b981;
+            color: white;
+        }
+
+        body.light-mode .cal-day.past {
+            opacity: 0.35;
+        }
+
+        body.light-mode .chart-bar-track {
+            background: #e2e8f0;
+        }
+
+        body.light-mode .cal-month-label {
+            color: #2563eb;
+        }
+
+        body.light-mode .cal-nav-btn {
+            background: #e2e8f0;
+            border-color: #c9c9c9;
+            color: #1c1c1c;
+        }
+
+        body.light-mode .cal-nav-btn:hover {
+            background: #c9c9c9;
+        }
+
+        body.light-mode .card-body .info-row strong {
+            color: #1c1c1c;
+        }
+
+        body.light-mode .btn-update {
+            background-color: #e2e8f0;
+            color: #1c1c1c;
+            border-color: #c9c9c9;
+        }
+
+        body.light-mode .btn-update:hover {
+            background-color: #c9c9c9;
+            color: #1c1c1c;
+        }
+
+        .cal-day:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .cal-day.event {
+            border: 2px solid #f59e0b;
+            font-weight: bold;
+        }
+
+        .cal-day.active-day {
+            background: #10b981;
+            color: white;
+            font-weight: bold;
+        }
+
+        .messages-container {
+            margin-bottom: 20px;
+        }
+
+        .msg-alert {
+            padding: 12px 18px;
+            border-radius: 6px;
+            background: #10b981;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Gráficos de barras */
+        .chart-bar-container {
+            margin-bottom: 12px;
+        }
+
+        .chart-bar-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .chart-bar-label span:first-child {
+            color: #8b8b8b;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .chart-bar-label span:last-child {
+            color: #f1f1f1;
+            font-weight: 700;
+            font-family: monospace;
+        }
+
+        .chart-bar-track {
+            width: 100%;
+            height: 10px;
+            background: #1c1c1c;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .chart-bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.8s ease;
+        }
+
+        .chart-bar-fill.green { background: linear-gradient(90deg, #059669, #10b981); }
+        .chart-bar-fill.blue { background: linear-gradient(90deg, #2563eb, #60a5fa); }
+        .chart-bar-fill.yellow { background: linear-gradient(90deg, #d97706, #f59e0b); }
+        .chart-bar-fill.red { background: linear-gradient(90deg, #c1121f, #ef4444); }
+
+        /* Navegación del calendario */
+        .cal-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .cal-nav-btn {
+            background: #1c1c1c;
+            border: 1px solid #3a3a3a;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .cal-nav-btn:hover {
+            background: #3a3a3a;
+        }
+
+        .cal-month-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #3b82f6;
+            text-transform: uppercase;
+        }
+
+        .cal-day.empty {
+            background: transparent;
+            cursor: default;
+        }
+
+        .cal-day.past {
+            opacity: 0.35;
+            cursor: default;
+        }
+
+        /* Responsive celular */
+        @media(max-width: 768px){
+            .command-center{
+                padding: 15px;
+            }
+            .section-title{
+                font-size: 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .dashboard-grid{
+                grid-template-columns: 1fr;
+            }
+            .card-body{
+                padding: 14px;
+            }
+        }
+{% endblock %}
+
+{% block header_title %}📡 Operador en línea: {{ user.username|upper }}{% endblock %}
+
+{% block header_actions %}
+        <a href="{% url 'partes_guardia' %}">📋 Partes de Guardia</a>
+        <a href="{% url 'unidades_lista' %}">🚛 Unidades</a>
+        <a href="{% url 'home' %}">◂ Base Central</a>
+        <a href="{% url 'logout' %}" class="btn-logout">Desconectar</a>
+{% endblock %}
+
+{% block content %}
+    <div class="command-center">
+
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="msg-alert">✅ {{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h1 class="section-title">
+            <span>Panel de Control Operativo</span>
+            <small style="font-size: 14px; color: #10b981; text-transform: none; font-weight: normal;">● Sistema en tiempo real</small>
+        </h1>
+
+        <div class="dashboard-grid">
+
+            <!-- Card 1: Aprobar Bomberos (Solo Jefes) -->
+            {% if user.rol == 'jefe' or user.is_superuser %}
+            <div class="control-card approval">
+                <div class="card-header">
+                    <span>👮 Aprobación de Bomberos</span>
+                    <span style="font-size: 11px; background: #f59e0b; color: black; padding: 2px 6px; border-radius: 4px; font-weight: bold;">{{ bomberos_pendientes.count }} Pendiente(s)</span>
+                </div>
+                <div class="card-body">
+                    {% if bomberos_pendientes %}
+                        {% for b in bomberos_pendientes %}
+                        <div class="info-row">
+                            <div>
+                                <strong style="color: #fbbf24;">{{ b.username }}</strong>
+                                <div style="font-size: 11px; color: #8b8b8b;">DNI: {{ b.documento }} | {{ b.get_rol_display }}</div>
+                            </div>
+                            <a href="{% url 'aprobar_bombero' b.id %}" class="btn-approve">✓ Aprobar</a>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p style="color: #10b981; font-weight: bold; text-align: center; margin: 15px 0;">✅ Todos los bomberos registrados están validados.</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Card 2: Estadísticas de Inventario con Gráficos -->
+            <div class="control-card inventory">
+                <div class="card-header">
+                    <span>📊 Estado del Equipamiento</span>
+                    <span style="font-size: 12px; color: #10b981; font-weight: normal;">Total: {{ total|default:0 }}</span>
+                </div>
+                <div class="card-body">
+                    <div style="display: flex; justify-content: space-between; text-align: center; margin-bottom: 20px; margin-top: 10px;">
+                        <div>
+                            <div style="font-size: 28px; font-weight: 900; color: #10b981; font-family: monospace;">{{ disponibles|default:0 }}</div>
+                            <div style="font-size: 11px; color: #8b8b8b; text-transform: uppercase; font-weight: bold; margin-top: 5px;">Disponibles</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 28px; font-weight: 900; color: #60a5fa; font-family: monospace;">{{ en_stock|default:0 }}</div>
+                            <div style="font-size: 11px; color: #8b8b8b; text-transform: uppercase; font-weight: bold; margin-top: 5px;">En Stock</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 28px; font-weight: 900; color: #f59e0b; font-family: monospace;">{{ en_uso|default:0 }}</div>
+                            <div style="font-size: 11px; color: #8b8b8b; text-transform: uppercase; font-weight: bold; margin-top: 5px;">En Uso</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 28px; font-weight: 900; color: #ef4444; font-family: monospace;">{{ no_disponibles|default:0 }}</div>
+                            <div style="font-size: 11px; color: #8b8b8b; text-transform: uppercase; font-weight: bold; margin-top: 5px;">No Disponibles</div>
+                        </div>
+                    </div>
+
+                    {% if total %}
+                    <div style="margin-top: 15px;">
+                        <div class="chart-bar-container">
+                            <div class="chart-bar-label"><span>Disponibles</span><span>{{ disponibles|default:0 }} / {{ total }}</span></div>
+                            <div class="chart-bar-track"><div class="chart-bar-fill green" style="width: {% widthratio disponibles total 100 %}%;"></div></div>
+                        </div>
+                        <div class="chart-bar-container">
+                            <div class="chart-bar-label"><span>En Stock</span><span>{{ en_stock|default:0 }} / {{ total }}</span></div>
+                            <div class="chart-bar-track"><div class="chart-bar-fill blue" style="width: {% widthratio en_stock total 100 %}%;"></div></div>
+                        </div>
+                        <div class="chart-bar-container">
+                            <div class="chart-bar-label"><span>En Uso</span><span>{{ en_uso|default:0 }} / {{ total }}</span></div>
+                            <div class="chart-bar-track"><div class="chart-bar-fill yellow" style="width: {% widthratio en_uso total 100 %}%;"></div></div>
+                        </div>
+                        <div class="chart-bar-container">
+                            <div class="chart-bar-label"><span>No Disponibles</span><span>{{ no_disponibles|default:0 }} / {{ total }}</span></div>
+                            <div class="chart-bar-track"><div class="chart-bar-fill red" style="width: {% widthratio no_disponibles total 100 %}%;"></div></div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <a href="{% url 'home' %}" class="btn-update">Ver Inventario Completo</a>
+                </div>
+            </div>
+
+            <!-- Card 3: Calendario de Mantenimiento Funcional -->
+            <div class="control-card calendar-card">
+                <div class="card-header">
+                    <span>📅 Calendario de Inspecciones</span>
+                    {% if user.rol == 'jefe' or user.is_superuser %}
+                    <a href="{% url 'agregar_evento' %}" style="background: #f59e0b; color: #1c1c1c; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 12px; text-decoration: none; transition: 0.2s;">+ Nuevo Evento</a>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="cal-nav">
+                        <button class="cal-nav-btn" onclick="calNav(-1)">&#9664;</button>
+                        <span class="cal-month-label" id="calMonthLabel"></span>
+                        <button class="cal-nav-btn" onclick="calNav(1)">&#9654;</button>
+                    </div>
+                    <div class="calendar-widget" id="calendarGrid">
+                        <div class="cal-day-head">L</div><div class="cal-day-head">M</div><div class="cal-day-head">X</div><div class="cal-day-head">J</div><div class="cal-day-head">V</div><div class="cal-day-head">S</div><div class="cal-day-head">D</div>
+                    </div>
+                    <div id="calEventDetail" style="margin-top: 15px; padding: 10px; background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3b82f6; border-radius: 4px; font-size: 12px;">
+                        Seleccioná un día para ver detalles.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4: Ubicación del Inventario con Gráficos -->
+            <div class="control-card">
+                <div class="card-header">📍 Distribución por Unidades</div>
+                <div class="card-body">
+                    {% if total %}
+                    <div class="chart-bar-container">
+                        <div class="chart-bar-label"><span>Estructural</span><span>{{ por_ubicacion.estructural|default:0 }} items</span></div>
+                        <div class="chart-bar-track"><div class="chart-bar-fill green" style="width: {% widthratio por_ubicacion.estructural total 100 %}%;"></div></div>
+                    </div>
+                    <div class="chart-bar-container">
+                        <div class="chart-bar-label"><span>Rescate</span><span>{{ por_ubicacion.rescate|default:0 }} items</span></div>
+                        <div class="chart-bar-track"><div class="chart-bar-fill blue" style="width: {% widthratio por_ubicacion.rescate total 100 %}%;"></div></div>
+                    </div>
+                    <div class="chart-bar-container">
+                        <div class="chart-bar-label"><span>Forestal</span><span>{{ por_ubicacion.forestal|default:0 }} items</span></div>
+                        <div class="chart-bar-track"><div class="chart-bar-fill yellow" style="width: {% widthratio por_ubicacion.forestal total 100 %}%;"></div></div>
+                    </div>
+                    <div class="chart-bar-container">
+                        <div class="chart-bar-label"><span>Cisterna</span><span>{{ por_ubicacion.cisterna|default:0 }} items</span></div>
+                        <div class="chart-bar-track"><div class="chart-bar-fill red" style="width: {% widthratio por_ubicacion.cisterna total 100 %}%;"></div></div>
+                    </div>
+                    <div class="chart-bar-container">
+                        <div class="chart-bar-label"><span>Depósito</span><span>{{ por_ubicacion.deposito|default:0 }} items</span></div>
+                        <div class="chart-bar-track"><div class="chart-bar-fill green" style="width: {% widthratio por_ubicacion.deposito total 100 %}%;"></div></div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Card 5: Expediente Personal -->
+            <div class="control-card">
+                <div class="card-header">📋 Mi Expediente</div>
+                <div class="card-body">
+                    <div class="info-row">
+                        <span class="info-label">Operador</span>
+                        <span class="info-value">{{ user.username }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">DNI</span>
+                        <span class="info-value">{{ user.documento|default:"--" }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Rango / Rol</span>
+                        <span class="info-value">
+                            {% if user.rol == 'jefe' or user.is_superuser %}Jefe de Unidad{% else %}Bombero Rescatista{% endif %}
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Estado de Cuenta</span>
+                        <span class="info-value" style="color: #10b981;">✓ Aprobado y Validado</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6: Actividad Reciente -->
+            {% if user.rol == 'jefe' or user.is_superuser %}
+            <div class="control-card" style="border-top-color: #8b5cf6;">
+                <div class="card-header">
+                    <span>🕐 Actividad Reciente</span>
+                    <span style="font-size: 11px; color: #8b5cf6;">Últimos 10 registros</span>
+                </div>
+                <div class="card-body">
+                    {% if actividad_reciente %}
+                    <div style="text-align: right; margin-bottom: 10px;">
+                        <form method="POST" action="{% url 'vaciar_actividad' %}" style="display: inline;" onsubmit="return confirm('¿Eliminar TODO el registro de actividad? Esta acción no se puede deshacer.');">
+                            {% csrf_token %}
+                            <button type="submit" style="background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid #ef4444; padding: 6px 12px; border-radius: 5px; font-size: 12px; font-weight: bold; cursor: pointer; font-family: inherit; transition: 0.2s;">🗑 Vaciar historial</button>
+                        </form>
+                    </div>
+                    {% for reg in actividad_reciente %}
+                        <div class="info-row">
+                            <div>
+                                <span style="font-size: 11px; padding: 2px 6px; border-radius: 3px; font-weight: bold;
+                                    {% if reg.accion == 'crear' %}background: #102816; color: #5ee173;
+                                    {% elif reg.accion == 'editar' %}background: #2a210f; color: #f5c451;
+                                    {% else %}background: #2b1113; color: #ff6b6b;{% endif %}">
+                                    {{ reg.get_accion_display|upper }}
+                                </span>
+                                <strong style="color: #f1f1f1; margin-left: 6px;">[{{ reg.herramienta_codigo }}]</strong>
+                                <span style="color: #8b8b8b; font-size: 12px;">{{ reg.herramienta_nombre }}</span>
+                            </div>
+                            <span style="font-size: 11px; color: #6b6b6b; white-space: nowrap;">{{ reg.fecha|date:"d/m H:i" }}</span>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p style="color: #6b6b6b; text-align: center; margin: 15px 0;">Sin actividad registrada aún.</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    // === CALENDARIO DINÁMICO ===
+    const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    const hoy = new Date();
+    let calMonth = hoy.getMonth();
+    let calYear = hoy.getFullYear();
+
+    // Eventos cargados desde la base de datos
+    const inspecciones = {
+        {% for ev in eventos %}
+        '{{ ev.fecha|date:"Y-m-d" }}': { titulo: '{{ ev.titulo|escapejs }}', id: {{ ev.id }} }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    };
+
+    function renderCalendar() {
+        const grid = document.getElementById('calendarGrid');
+        const label = document.getElementById('calMonthLabel');
+        label.textContent = meses[calMonth] + ' ' + calYear;
+
+        const existingDays = grid.querySelectorAll('.cal-day, .cal-day.empty');
+        existingDays.forEach(d => d.remove());
+
+        const primerDia = new Date(calYear, calMonth, 1).getDay();
+        const diasEnMes = new Date(calYear, calMonth + 1, 0).getDate();
+        const offset = (primerDia + 6) % 7;
+
+        for (let i = 0; i < offset; i++) {
+            const empty = document.createElement('div');
+            empty.className = 'cal-day empty';
+            grid.appendChild(empty);
+        }
+
+        for (let d = 1; d <= diasEnMes; d++) {
+            const cell = document.createElement('div');
+            cell.className = 'cal-day';
+            cell.textContent = d;
+
+            const thisDate = new Date(calYear, calMonth, d);
+            if (thisDate < new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate())) {
+                cell.classList.add('past');
+            }
+
+            if (d === hoy.getDate() && calMonth === hoy.getMonth() && calYear === hoy.getFullYear()) {
+                cell.classList.add('active-day');
+            }
+
+            // Verificar si hay evento en esta fecha
+            const fechaKey = calYear + '-' + String(calMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+            if (inspecciones[fechaKey]) {
+                cell.classList.add('event');
+                cell.title = inspecciones[fechaKey].titulo;
+            }
+
+            cell.onclick = function() { selectDate(d); };
+            grid.appendChild(cell);
+        }
+    }
+
+    function calNav(dir) {
+        calMonth += dir;
+        if (calMonth > 11) { calMonth = 0; calYear++; }
+        if (calMonth < 0) { calMonth = 11; calYear--; }
+        renderCalendar();
+    }
+
+    function selectDate(day) {
+        const detail = document.getElementById('calEventDetail');
+        const fechaKey = calYear + '-' + String(calMonth + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+
+        if (inspecciones[fechaKey]) {
+            const ev = inspecciones[fechaKey];
+            detail.innerHTML = '📌 <strong>' + day + ' de ' + meses[calMonth] + ':</strong> ' + ev.titulo +
+                '<div style="margin-top: 8px;">' +
+                '<a href="/evento/' + ev.id + '/eliminar/" onclick="return confirm(\'¿Eliminar este evento?\');" style="background: #c1121f; color: white; padding: 4px 10px; border-radius: 4px; font-size: 11px; text-decoration: none; font-weight: bold;">Eliminar</a>' +
+                '</div>';
+            detail.style.borderLeftColor = '#f59e0b';
+            detail.style.background = 'rgba(245, 158, 11, 0.1)';
+        } else {
+            detail.innerHTML = '📌 <strong>' + day + ' de ' + meses[calMonth] + ':</strong> Sin inspección programada. Guardia habitual.';
+            detail.style.borderLeftColor = '#3b82f6';
+            detail.style.background = 'rgba(59, 130, 246, 0.1)';
+        }
+    }
+
+    renderCalendar();
+{% endblock %}

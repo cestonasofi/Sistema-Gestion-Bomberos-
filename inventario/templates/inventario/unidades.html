@@ -1,0 +1,359 @@
+{% extends "inventario/base.html" %}
+{% load static %}
+
+{% block title %}Unidades - Parque Automotor{% endblock %}
+
+{% block extra_css %}
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+            padding: 25px;
+            max-width: 1150px;
+            width: 100%;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .cabecera-pagina {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .cabecera-pagina h1 {
+            margin: 0;
+            color: #ef4444;
+            font-size: 23px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-agregar-unidad {
+            background-color: #c1121f;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+
+        .btn-agregar-unidad:hover {
+            background-color: #b91c1c;
+        }
+
+        .filtros {
+            margin-bottom: 20px;
+        }
+
+        .filtros form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filtros select {
+            background-color: #1c1c1c;
+            color: #f1f1f1;
+            border: 1px solid #3a3a3a;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        .filtros button, .filtros a {
+            background-color: #1c1c1c;
+            color: #c9c9c9;
+            border: 1px solid #3a3a3a;
+            border-radius: 6px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .filtros button:hover, .filtros a:hover {
+            background-color: #3a3a3a;
+            color: white;
+        }
+
+        .sitio-bloque {
+            margin-bottom: 30px;
+        }
+
+        .sitio-titulo {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #3a3a3a;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        .sitio-titulo h2 {
+            margin: 0;
+            color: #f59e0b;
+            font-size: 19px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sitio-titulo .localidad {
+            color: #8b8b8b;
+            font-size: 13px;
+        }
+
+        .sitio-titulo .dotacion {
+            margin-left: auto;
+            background-color: #121212;
+            border: 1px solid #3a3a3a;
+            color: #c9c9c9;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .grid-unidades {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+        }
+
+        .unidad-card {
+            background-color: #121212;
+            border: 1px solid #3a3a3a;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .unidad-card .barra {
+            height: 5px;
+            background-color: #f59e0b;
+        }
+
+        .unidad-body {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .unidad-nombre {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .unidad-nombre h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #f1f1f1;
+        }
+
+        .badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 9px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .badge-base { background-color: rgba(52, 211, 153, 0.15); color: #34d399; border: 1px solid #34d399; }
+        .badge-servicio { background-color: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid #f59e0b; }
+        .badge-ruta { background-color: rgba(96, 165, 250, 0.15); color: #60a5fa; border: 1px solid #60a5fa; }
+        .badge-mantenimiento { background-color: rgba(248, 113, 113, 0.15); color: #f87171; border: 1px solid #f87171; }
+
+        .unidad-tipo {
+            font-size: 12px;
+            color: #8b8b8b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .unidad-datos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 4px 0;
+        }
+
+        .chip {
+            background-color: #1c1c1c;
+            border: 1px solid #1c1c1c;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 12px;
+            color: #c9c9c9;
+        }
+
+        .chip strong {
+            color: #f1f1f1;
+        }
+
+        .unidad-equipamiento {
+            font-size: 12px;
+            color: #8b8b8b;
+            line-height: 1.5;
+            border-top: 1px solid #1c1c1c;
+            padding-top: 8px;
+        }
+
+        .unidad-acciones {
+            display: flex;
+            gap: 8px;
+            border-top: 1px solid #1c1c1c;
+            padding: 10px 16px;
+        }
+
+        .unidad-acciones a {
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 7px;
+            text-transform: uppercase;
+        }
+
+        .btn-editar {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .btn-editar:hover { background-color: #1d4ed8; }
+
+        .btn-eliminar {
+            background-color: #b91c1c;
+            color: white;
+        }
+
+        .btn-eliminar:hover { background-color: #991b1b; }
+
+        .vacio {
+            color: #6b6b6b;
+            text-align: center;
+            padding: 25px;
+            border: 1px dashed #3a3a3a;
+            border-radius: 10px;
+        }
+
+        @media(max-width: 600px){
+            .container { padding: 15px; }
+            .grid-unidades { grid-template-columns: 1fr; }
+            .sitio-titulo .dotacion { margin-left: 0; }
+        }
+{% endblock %}
+
+{% block header_title %}🚒 Operador: {{ user.username|upper }}{% endblock %}
+
+{% block header_actions %}
+        {% if es_jefe %}
+            <a href="{% url 'configuracion' %}">Panel de Control</a>
+        {% else %}
+            <a href="{% url 'panel_bombero' %}">Mi Panel</a>
+        {% endif %}
+        <a href="{% url 'home' %}">Inventario</a>
+        <a href="{% url 'logout' %}" class="btn-logout">Desconectar</a>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="cabecera-pagina">
+            <h1>Unidades - Parque Automotor</h1>
+            {% if es_jefe %}
+                <a href="{% url 'agregar_unidad' %}" class="btn-agregar-unidad">+ Agregar Unidad</a>
+            {% endif %}
+        </div>
+
+        <div class="filtros">
+            <form method="GET" action="{% url 'unidades_lista' %}">
+                <select name="sitio">
+                    <option value="">Todos los sitios</option>
+                    {% for s in sitios %}
+                        <option value="{{ s.id }}" {% if sitio_filter == s.id|stringformat:"s" %}selected{% endif %}>{{ s.nombre }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Filtrar</button>
+                <a href="{% url 'unidades_lista' %}">Limpiar</a>
+            </form>
+        </div>
+
+        {% for sitio in sitios %}
+            <div class="sitio-bloque">
+                <div class="sitio-titulo">
+                    <h2>{{ sitio.nombre }}</h2>
+                    <span class="localidad">{{ sitio.localidad }}</span>
+                    <span class="dotacion">Dotación: {{ sitio.dotacion }} bomberos</span>
+                </div>
+
+                {% if sitio.unidades.all %}
+                    <div class="grid-unidades">
+                        {% for unidad in sitio.unidades.all %}
+                            <div class="unidad-card">
+                                <div class="barra"></div>
+                                <div class="unidad-body">
+                                    <div class="unidad-nombre">
+                                        <h3>{{ unidad.nombre }}</h3>
+                                        <span class="badge badge-{{ unidad.estado_operativo }}">{{ unidad.get_estado_operativo_display }}</span>
+                                    </div>
+                                    <div class="unidad-tipo">{{ unidad.get_clasificacion_display }}</div>
+                                    {% if unidad.modelo %}<div class="unidad-tipo">{{ unidad.modelo }}</div>{% endif %}
+                                    <div class="unidad-datos">
+                                        {% if unidad.capacidad_personal %}
+                                            <span class="chip"><strong>{{ unidad.capacidad_personal }}</strong> personal</span>
+                                        {% endif %}
+                                        {% if unidad.capacidad_agua %}
+                                            <span class="chip"><strong>{{ unidad.capacidad_agua }}</strong> L de agua</span>
+                                        {% endif %}
+                                    </div>
+                                    {% if unidad.funcion %}
+                                        <div class="unidad-equipamiento">{{ unidad.funcion }}</div>
+                                    {% endif %}
+                                    {% if unidad.equipamiento %}
+                                        <div class="unidad-equipamiento"><strong>Equipamiento:</strong> {{ unidad.equipamiento }}</div>
+                                    {% endif %}
+                                </div>
+                                {% if es_jefe %}
+                                    <div class="unidad-acciones">
+                                        <a href="{% url 'editar_unidad' unidad.id %}" class="btn-editar">Editar</a>
+                                        <form method="POST" action="{% url 'eliminar_unidad' unidad.id %}" style="flex:1; margin:0;" onsubmit="return confirm('¿Eliminar la unidad {{ unidad.nombre }}?');">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn-eliminar" style="width:100%; border:none; cursor:pointer; font-family:inherit; border-radius:5px; padding:7px; font-size:12px; font-weight:bold; text-transform:uppercase;">Eliminar</button>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="vacio">Sin unidades registradas en este sitio.</div>
+                {% endif %}
+            </div>
+        {% empty %}
+            <div class="vacio">No hay sitios cargados.</div>
+        {% endfor %}
+    </div>
+{% endblock %}

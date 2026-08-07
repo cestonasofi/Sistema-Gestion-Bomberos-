@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Inventario</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #ffffff;
+            color: #111111;
+            padding: 30px 40px;
+        }
+        .acciones {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .acciones button {
+            background: #c1121f;
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .acciones button:hover { background: #a00f1a; }
+        .encabezado { text-align: center; margin-bottom: 8px; }
+        .encabezado h1 { color: #c1121f; font-size: 26px; }
+        .encabezado p { color: #555; font-size: 13px; margin-top: 4px; }
+        .resumen { text-align: center; margin: 14px 0 22px; font-size: 14px; color: #333; }
+        h2 {
+            background: #c1121f;
+            color: #fff;
+            font-size: 15px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin: 22px 0 8px;
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th {
+            background: #f0f0f0;
+            color: #333;
+            text-align: left;
+            padding: 7px 8px;
+            border: 1px solid #ccc;
+        }
+        td { padding: 6px 8px; border: 1px solid #ddd; vertical-align: top; }
+        tr:nth-child(even) td { background: #fafafa; }
+        .pie { margin-top: 26px; text-align: center; color: #888; font-size: 12px; }
+        @media print {
+            .acciones { display: none; }
+            body { padding: 0; }
+            h2 { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+    <div class="acciones">
+        <button onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
+    </div>
+
+    <div class="encabezado">
+        <h1>Reporte de Inventario</h1>
+        <p>Cuartel de Bomberos - Sistema de Gestión de Inventario Operativo</p>
+        <p>Generado: {{ fecha|date:"d/m/Y H:i" }} - Operador: {{ usuario.username }}</p>
+    </div>
+
+    <div class="resumen">Total de herramientas registradas: <b>{{ total }}</b></div>
+
+    {% for ubicacion, lista in grupos.items %}
+        {% if lista %}
+        <h2>{{ ubicacion|capfirst }}</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 8%;">Código</th>
+                    <th style="width: 42%;">Material / Herramienta</th>
+                    <th style="width: 18%;">Unidad</th>
+                    <th style="width: 14%;">Estado</th>
+                    <th style="width: 18%;">Disponibilidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for h in lista %}
+                <tr>
+                    <td>{{ h.codigo }}</td>
+                    <td>{{ h.nombre }}</td>
+                    <td>{{ h.unidad.nombre|default:"—" }}</td>
+                    <td>{{ h.estado }}</td>
+                    <td>{{ h.disponibilidad }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    {% endfor %}
+
+    <div class="pie">Documento generado automáticamente por el Sistema de Gestión de Cuartel de Bomberos.</div>
+</body>
+</html>

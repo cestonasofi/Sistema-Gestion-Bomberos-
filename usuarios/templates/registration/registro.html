@@ -1,0 +1,365 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta de Personal - Gestión Operativa</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #f1f1f1;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .registro-card {
+            background-color: #111111;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            overflow: hidden;
+            border: 1px solid #3a3a3a;
+        }
+
+        .hazard-stripe {
+            background: repeating-linear-gradient(45deg, #f59e0b, #f59e0b 12px, #0a0a0a 12px, #0a0a0a 24px);
+            height: 12px;
+            width: 100%;
+        }
+
+        .registro-header {
+            background-color: #0a0a0a;
+            padding: 10px 20px;
+            text-align: center;
+            border-bottom: 1px solid #1c1c1c;
+        }
+
+        .registro-header h2 {
+            color: #ef4444;
+            margin: 0;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .registro-body {
+            padding: 14px 22px;
+        }
+
+        .form-group {
+            margin-bottom: 8px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 3px;
+            color: #c9c9c9;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 7px 10px;
+            border: 1px solid #3a3a3a;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 13px;
+            font-family: inherit;
+            background-color: #0a0a0a;
+            color: #f1f1f1;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #ef4444;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+        }
+
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-container input {
+            padding-right: 45px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 16px;
+            color: #6b6b6b;
+            user-select: none;
+            transition: color 0.2s;
+        }
+
+        .toggle-password:hover {
+            color: #f59e0b;
+        }
+
+        .helptext {
+            font-size: 11px;
+            color: #6b6b6b;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .errorlist {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 10px 0;
+        }
+
+        .errorlist li {
+            color: #fca5a5;
+            background-color: rgba(239, 68, 68, 0.1);
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            border-left: 3px solid #ef4444;
+            margin-bottom: 4px;
+        }
+
+        /* Tarjetas de selección de rol */
+        .rol-opciones {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 8px 0 4px 0;
+        }
+
+        .rol-opcion {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 5px;
+            background-color: #1c1c1c;
+            border: 2px solid #3a3a3a;
+            border-radius: 10px;
+            padding: 14px 10px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, transform 0.1s;
+            user-select: none;
+        }
+
+        .rol-opcion:hover {
+            border-color: #f59e0b;
+            transform: translateY(-1px);
+        }
+
+        .rol-opcion input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .rol-opcion.seleccionada {
+            border-color: #c1121f;
+            background: rgba(193, 18, 31, 0.12);
+            box-shadow: 0 0 0 3px rgba(193, 18, 31, 0.2);
+        }
+
+        .rol-opcion .rol-icono {
+            font-size: 26px;
+        }
+
+        .rol-opcion .rol-titulo {
+            font-weight: 800;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #f1f1f1;
+        }
+
+        .rol-opcion .rol-desc {
+            font-size: 11px;
+            color: #8b8b8b;
+            line-height: 1.3;
+        }
+
+        @media(max-width: 480px){
+            .rol-opciones { grid-template-columns: 1fr; }
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: #c1121f;
+            color: white;
+            border: none;
+            padding: 9px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 13px;
+            margin-top: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #b91c1c;
+        }
+
+        .auth-links {
+            margin-top: 12px;
+            text-align: center;
+            border-top: 1px solid #1c1c1c;
+            padding-top: 10px;
+        }
+
+        .auth-links a {
+            color: #8b8b8b;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .auth-links a:hover {
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="registro-card">
+        <div class="hazard-stripe"></div>
+
+        <div class="registro-header">
+            <h2>Alta de Personal</h2>
+        </div>
+
+        <div class="registro-body">
+            <form method="post">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <ul class="errorlist">
+                    {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <div class="form-group">
+                    <label for="id_username">Usuario</label>
+                    <input type="text" name="username" id="id_username" value="{{ form.username.value|default:'' }}" required placeholder="Ej: oficial_guardia">
+                    {% if form.username.errors %}<ul class="errorlist">{% for e in form.username.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_email">Correo Electrónico</label>
+                    <input type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required placeholder="operador@cuartel.gob">
+                    {% if form.email.errors %}<ul class="errorlist">{% for e in form.email.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_documento">Documento (DNI)</label>
+                    <input type="text" name="documento" id="id_documento" value="{{ form.documento.value|default:'' }}" required placeholder="Ej: 40123456">
+                    {% if form.documento.errors %}<ul class="errorlist">{% for e in form.documento.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label>Elegí tu tipo de acceso *</label>
+                    <div class="rol-opciones">
+                        <label class="rol-opcion{% if form.rol.value != 'jefe' %} seleccionada{% endif %}" id="opc-rescatista">
+                            <input type="radio" name="rol" value="rescatista" id="id_rol_rescatista" {% if form.rol.value != 'jefe' %}checked{% endif %} required>
+                            <span class="rol-icono">🧑‍🚒</span>
+                            <span class="rol-titulo">Bombero Rescatista</span>
+                            <span class="rol-desc">Consulta de inventario y reporte de estado</span>
+                        </label>
+                        <label class="rol-opcion{% if form.rol.value == 'jefe' %} seleccionada{% endif %}" id="opc-jefe">
+                            <input type="radio" name="rol" value="jefe" id="id_rol_jefe" {% if form.rol.value == 'jefe' %}checked{% endif %}>
+                            <span class="rol-icono">🏢</span>
+                            <span class="rol-titulo">Jefe de Unidad / Comandante</span>
+                            <span class="rol-desc">Acceso total al sistema. El primer jefe se aprueba automáticamente.</span>
+                        </label>
+                    </div>
+                    <span class="helptext" id="rol-ayuda">Bombero Rescatista: consulta de inventario y reporte de estado.</span>
+                    {% if form.rol.errors %}<ul class="errorlist">{% for e in form.rol.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password1">Contraseña</label>
+                    <div class="password-container">
+                        <input type="password" name="password1" id="id_password1" required placeholder="Mínimo 8 caracteres">
+                        <span class="toggle-password" onclick="togglePass('id_password1', this)">🔒</span>
+                    </div>
+                    {% if form.password1.help_text %}<span class="helptext">{{ form.password1.help_text }}</span>{% endif %}
+                    {% if form.password1.errors %}<ul class="errorlist">{% for e in form.password1.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password2">Confirmar Contraseña</label>
+                    <div class="password-container">
+                        <input type="password" name="password2" id="id_password2" required placeholder="Repita la contraseña">
+                        <span class="toggle-password" onclick="togglePass('id_password2', this)">🔒</span>
+                    </div>
+                    {% if form.password2.errors %}<ul class="errorlist">{% for e in form.password2.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+                </div>
+
+                <button type="submit" class="btn-submit">Confirmar Registro</button>
+            </form>
+
+            <div class="auth-links">
+                <a href="{% url 'login' %}">Volver al inicio de sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePass(id, el) {
+            const input = document.getElementById(id);
+            if (input.type === 'password') {
+                input.type = 'text';
+                el.innerHTML = '👁️';
+            } else {
+                input.type = 'password';
+                el.innerHTML = '🔒';
+            }
+        }
+
+        const radiosRol = document.querySelectorAll('input[name="rol"]');
+        const opcionesRol = document.querySelectorAll('.rol-opcion');
+        const rolAyuda = document.getElementById('rol-ayuda');
+
+        function actualizarAyudaRol(valor) {
+            opcionesRol.forEach(o => o.classList.remove('seleccionada'));
+            if (valor === 'jefe') {
+                document.getElementById('opc-jefe').classList.add('seleccionada');
+                rolAyuda.textContent = 'Jefe de Unidad: acceso total al sistema. Si es el primer jefe, queda aprobado automáticamente; si ya existe uno, quedará pendiente de aprobación.';
+                rolAyuda.style.color = '#fbbf24';
+            } else {
+                document.getElementById('opc-rescatista').classList.add('seleccionada');
+                rolAyuda.textContent = 'Bombero Rescatista: consulta de inventario y reporte de estado.';
+                rolAyuda.style.color = '#6b6b6b';
+            }
+        }
+
+        radiosRol.forEach(r => r.addEventListener('change', function() {
+            if (this.checked) actualizarAyudaRol(this.value);
+        }));
+
+        const marcada = document.querySelector('input[name="rol"]:checked');
+        if (marcada) actualizarAyudaRol(marcada.value);
+    </script>
+</body>
+</html>

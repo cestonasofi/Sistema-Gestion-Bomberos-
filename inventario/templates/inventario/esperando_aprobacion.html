@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuenta Pendiente de Aprobación - Central de Bomberos</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .approval-card {
+            background: #1e293b;
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .approval-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .approval-card h2 {
+            color: #f59e0b;
+            margin-top: 0;
+            text-transform: uppercase;
+        }
+
+        .approval-card p {
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .btn-logout {
+            background: #ef4444;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <div class="approval-card">
+        <div class="approval-icon">⏳</div>
+        <h2>Cuenta en Verificación</h2>
+        <p>Hola, <strong>{{ user.username }}</strong>. Tu solicitud de registro como <strong>{{ user.get_rol_display }}</strong> ha sido recibida correctamente.</p>
+        <p>Por políticas del cuartel, un <strong>Jefe de Unidad</strong> debe validar tu identidad antes de que puedas acceder al inventario central.</p>
+        <a href="{% url 'logout' %}" class="btn-logout">Cerrar Sesión</a>
+    </div>
+</body>
+</html>
