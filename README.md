@@ -91,20 +91,6 @@ Sistema web profesional desarrollado con **Django** para el control, monitoreo e
 
 ---
 
-## 👤 Cuentas de Prueba
-
-El comando `crear_cuentas` genera las siguientes cuentas de acceso:
-
-| Usuario   | Contraseña           | Rol                  |
-|-----------|----------------------|----------------------|
-| `jefe`    | `jefepassword123`    | Jefe de Unidad       |
-| `bombero` | `bomberopassword123` | Bombero Rescatista   |
-| `admin`   | `admin123`           | Administrador (superusuario) |
-
-> **Nota:** Al ingresar por primera vez, las contraseñas deberían cambiarse desde la sección de configuración.
-
----
-
 ## 🐳 Ejecución con Docker
 
 Para levantar el sistema utilizando Docker Compose:
