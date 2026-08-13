@@ -1,5 +1,5 @@
 """
-ASGI config for central_bomberos project.
+ASGI config for central_gestion project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'central_bomberos.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'central_gestion.settings')
 
 application = get_asgi_application()

@@ -53,10 +53,10 @@ Sistema web profesional desarrollado con **Django** para el control, monitoreo e
 1. **Clonar el repositorio**
    ```bash
    git clone https://github.com/cestonasofi/Sistema-Gestion-Bomberos-.git
-   cd Sistema-Gestion-Bomberos-/central_bomberos
+   cd Sistema-Gestion-Bomberos-
    ```
 
-2. **Crear el archivo `.env` en la carpeta `central_bomberos/`**
+2. **Crear el archivo `.env` en la raíz del proyecto**
    ```env
    SECRET_KEY=tu_clave_secreta
    DEBUG=True
@@ -91,6 +91,20 @@ Sistema web profesional desarrollado con **Django** para el control, monitoreo e
 
 ---
 
+## 👤 Cuentas de Prueba
+
+El comando `crear_cuentas` genera las siguientes cuentas de acceso:
+
+| Usuario   | Contraseña           | Rol                  |
+|-----------|----------------------|----------------------|
+| `jefe`    | `jefepassword123`    | Jefe de Unidad       |
+| `bombero` | `bomberopassword123` | Bombero Rescatista   |
+| `admin`   | `admin123`           | Administrador (superusuario) |
+
+> **Nota:** Al ingresar por primera vez, las contraseñas deberían cambiarse desde la sección de configuración.
+
+---
+
 ## 🐳 Ejecución con Docker
 
 Para levantar el sistema utilizando Docker Compose:
@@ -105,14 +119,13 @@ El contenedor aplicará las migraciones automáticamente y dejará la aplicació
 ## 📂 Estructura del Proyecto
 
 ```text
-central_bomberos/
 ├── central_gestion/         # Configuración principal de Django (settings, urls, wsgi)
 ├── inventario/              # Módulo principal (inventario, unidades, partes, calendario)
 │   ├── management/commands/ # Comandos de gestión (poblar_cuartel, crear_cuentas, respaldar)
 │   ├── migrations/          # Migraciones de base de datos
 │   ├── models.py            # Modelos de datos (Herramienta, ParteGuardia, etc.)
 │   ├── views.py             # Lógica de negocio, métricas y reportes
-│   ├── urls.py              # Rutas optimizadas con namespace
+│   ├── urls.py              # Rutas optimizadas y compactas
 │   ├── templates/inventario/# Plantillas HTML unificadas (base.html, index.html, etc.)
 │   └── static/              # Archivos estáticos consolidados (style.css, script.js)
 ├── usuarios/                # Módulo de autenticación, registro y recuperación de password

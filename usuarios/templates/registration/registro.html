@@ -290,7 +290,7 @@
                             <input type="radio" name="rol" value="jefe" id="id_rol_jefe" {% if form.rol.value == 'jefe' %}checked{% endif %}>
                             <span class="rol-icono">🏢</span>
                             <span class="rol-titulo">Jefe de Unidad / Comandante</span>
-                            <span class="rol-desc">Acceso total al sistema. El primer jefe se aprueba automáticamente.</span>
+                            <span class="rol-desc">Acceso total al sistema.</span>
                         </label>
                     </div>
                     <span class="helptext" id="rol-ayuda">Bombero Rescatista: consulta de inventario y reporte de estado.</span>
@@ -345,7 +345,7 @@
             opcionesRol.forEach(o => o.classList.remove('seleccionada'));
             if (valor === 'jefe') {
                 document.getElementById('opc-jefe').classList.add('seleccionada');
-                rolAyuda.textContent = 'Jefe de Unidad: acceso total al sistema. Si es el primer jefe, queda aprobado automáticamente; si ya existe uno, quedará pendiente de aprobación.';
+                rolAyuda.textContent = 'Jefe de Unidad: acceso total al sistema.';
                 rolAyuda.style.color = '#fbbf24';
             } else {
                 document.getElementById('opc-rescatista').classList.add('seleccionada');
