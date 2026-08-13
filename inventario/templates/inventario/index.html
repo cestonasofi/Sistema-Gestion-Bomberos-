@@ -3,350 +3,7 @@
 
 {% block title %}Central - Control de Unidades{% endblock %}
 
-{% block extra_css %}
-        .search-banner {
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin: 15px 30px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .search-banner.success {
-            background-color: #102816;
-            color: #5ee173;
-            border: 1px solid #34c759;
-        }
-
-        .search-banner.error {
-            background-color: #3b1111;
-            color: #f87171;
-            border: 1px solid #ef4444;
-        }
-
-        .btn-nota {
-            background-color: #2563eb;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            display: inline-block;
-        }
-
-        .btn-nota:hover {
-            background-color: #1d4ed8;
-        }
-
-        .notes-list {
-            margin-top: 6px;
-        }
-
-        .note-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(59, 130, 246, 0.08);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-left: 3px solid #3b82f6;
-            border-radius: 4px;
-            padding: 6px 10px;
-            margin-top: 4px;
-        }
-
-        .note-content {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            min-width: 0;
-        }
-
-        .note-text {
-            font-size: 12px;
-            color: #cbd5e1;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-
-        .note-meta {
-            font-size: 10px;
-            color: #64748b;
-        }
-
-        .btn-nota-delete {
-            background: none;
-            border: none;
-            color: #64748b;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 2px 6px;
-            border-radius: 4px;
-            transition: all 0.2s;
-            flex-shrink: 0;
-            line-height: 1;
-        }
-
-        .btn-nota-delete:hover {
-            background: rgba(239, 68, 68, 0.15);
-            color: #ef4444;
-        }
-
-        .menu-tema {
-            background: linear-gradient(180deg, #232323, #161616);
-            border: 1px solid #3a3a3a;
-            color: #e5e5e5;
-            padding: 8px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-right: 0;
-            font-family: inherit;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-            transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.1s;
-        }
-
-        .menu-tema:hover {
-            background: linear-gradient(180deg, #c1121f, #9c0e18);
-            border-color: #c1121f;
-            color: #fff;
-            box-shadow: 0 0 0 3px rgba(193, 18, 31, 0.3), 0 3px 8px rgba(0,0,0,0.5);
-            transform: translateY(-1px);
-        }
-
-        /* === MODO CLARO === */
-        body.light-mode {
-            background: #f1f5f9;
-            color: #0f172a;
-        }
-
-        body.light-mode #encabezado {
-            background: #ffffff;
-            border-left-color: #c1121f;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        body.light-mode .header-titulos h1 { color: #0f172a; }
-        body.light-mode .header-titulos h3 { color: #475569; }
-
-        body.light-mode #seccion-filtros {
-            background: #ffffff;
-            border-color: #e2e8f0;
-        }
-
-        body.light-mode #seccion-filtros h3 { color: #0f172a; }
-
-        body.light-mode #seccion-filtros button {
-            background: #f1f5f9;
-            color: #0f172a;
-            border-color: #cbd5e1;
-        }
-
-        body.light-mode #seccion-filtros button:hover {
-            background: #c1121f;
-            color: white;
-            border-color: #c1121f;
-        }
-
-        body.light-mode .barra-exportar {
-            background: #ffffff;
-            border-color: #e2e8f0;
-        }
-
-        body.light-mode .barra-exportar span { color: #475569; }
-
-        body.light-mode .btn-exportar {
-            background: #f1f5f9;
-            color: #0f172a;
-            border-color: #cbd5e1;
-        }
-
-        body.light-mode .btn-exportar:hover {
-            background: #c1121f;
-            color: white;
-            border-color: #c1121f;
-        }
-
-        body.light-mode #inventario-completo > div {
-            background: #ffffff;
-            border-color: #e2e8f0;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-        }
-
-        body.light-mode h2 {
-            color: #0f172a;
-            border-left-color: #c1121f;
-        }
-
-        body.light-mode thead { background: #f8fafc; }
-        body.light-mode thead th { color: #475569; border-bottom-color: #c1121f; }
-        body.light-mode tbody tr:nth-child(even) { background: #f8fafc; }
-        body.light-mode tbody tr:hover { background: #f1f5f9; }
-        body.light-mode tbody td { color: #1e293b; border-bottom-color: #e2e8f0; }
-
-        body.light-mode .user-menu {
-            background: #ffffff;
-            color: #1c1c1c;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        body.light-mode .user-menu span { color: #b91c1c; }
-        body.light-mode .user-menu a,
-        body.light-mode .menu-tema {
-            color: #1c1c1c;
-            border-color: #c9c9c9;
-            background: #f1f1f1;
-            box-shadow: none;
-        }
-        body.light-mode .user-menu a:hover,
-        body.light-mode .menu-tema:hover {
-            background: #c1121f;
-            color: #ffffff;
-            border-color: #c1121f;
-            box-shadow: none;
-            transform: none;
-        }
-        body.light-mode .user-menu a.menu-logout {
-            color: #b91c1c;
-            border-color: #fecaca;
-        }
-        body.light-mode .user-menu a.menu-logout:hover {
-            background: #b91c1c;
-            color: #ffffff;
-            box-shadow: none;
-            transform: none;
-        }
-
-        body.light-mode #buscador {
-            background: #ffffff;
-            border-color: #cbd5e1;
-            color: #0f172a;
-        }
-
-        body.light-mode #buscador:focus {
-            border-color: #c1121f;
-            box-shadow: 0 0 0 3px rgba(193,18,31,0.15);
-        }
-
-        body.light-mode #reloj {
-            background: #ffffff;
-            border-color: #cbd5e1;
-            color: #0f172a;
-        }
-
-        body.light-mode .note-item {
-            background: rgba(59, 130, 246, 0.05);
-            border-color: rgba(59, 130, 246, 0.15);
-        }
-
-        body.light-mode .note-text { color: #334155; }
-        body.light-mode .note-meta { color: #475569; }
-
-        body.light-mode .btn-nota { background-color: #2563eb; color: white; }
-        body.light-mode .search-banner.success { background-color: #f0fdf4; color: #166534; border-color: #22c55e; }
-        body.light-mode .search-banner.error { background-color: #fef2f2; color: #991b1b; border-color: #ef4444; }
-
-        body.light-mode .pagination-link {
-            background: #ffffff !important;
-            color: #0f172a !important;
-            border-color: #cbd5e1 !important;
-        }
-
-        body.light-mode .pagination-link:hover {
-            background: #f1f5f9 !important;
-        }
-
-        .modal-nota {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(4px);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-nota-content {
-            background: #1e293b;
-            padding: 25px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 480px;
-            border: 1px solid #475569;
-            color: white;
-        }
-
-        .modal-nota-content textarea {
-            width: 100%;
-            background: #0f172a;
-            color: white;
-            border: 1px solid #475569;
-            border-radius: 6px;
-            padding: 10px;
-            margin: 10px 0;
-            box-sizing: border-box;
-        }
-
-        .messages-container {
-            margin: 10px 30px;
-        }
-
-        .msg-alert {
-            padding: 10px 15px;
-            border-radius: 6px;
-            background: #10b981;
-            color: white;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        /* Badges de disponibilidad - inline para evitar cache del CSS */
-        .estado-disponible,
-        .estado-en-stock,
-        .estado-en-uso,
-        .estado-no-disponible {
-            display: inline-block;
-            padding: 8px 16px;
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            min-width: 130px;
-            text-align: center;
-        }
-
-        .estado-disponible {
-            background: #102816;
-            color: #5ee173;
-            border-left: 4px solid #34c759;
-        }
-
-        .estado-en-stock {
-            background: #1a1a2e;
-            color: #60a5fa;
-            border-left: 4px solid #3b82f6;
-        }
-
-        .estado-en-uso {
-            background: #2a210f;
-            color: #f5c451;
-            border-left: 4px solid #ffb703;
-        }
-
-        .estado-no-disponible {
-            background: #2b1113;
-            color: #ff6b6b;
-            border-left: 4px solid #ff2e2e;
-        }
-{% endblock %}
+{% block body_class %}pg-index{% endblock %}
 
 {% block header %}
     <div class="user-menu">
@@ -380,7 +37,7 @@
         </div>
         <div id="barra-superior">
             <div class="barra-izquierda">
-                <form method="GET" action="{% url 'home' %}" style="display: inline; width: 100%;">
+                <form method="GET" action="{% url 'home' %}" class="search-form-inline">
                     <input type="text" name="buscar" id="buscador" placeholder="🔍 Buscar por material, código (001), estado u ubicación..." value="{{ query }}">
                 </form>
             </div>
@@ -392,19 +49,18 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Banner de Retroalimentación de Búsqueda -->
     {% if query %}
         {% if total_encontrados > 0 %}
         <div class="search-banner success">
             <span>✅ Se encontraron {{ total_encontrados }} herramienta(s) para "{{ query }}".</span>
             <span>📍 Disponible en: {% for u in unidades_encontradas %}{{ u }}{% if not forloop.last %}, {% endif %}{% endfor %}</span>
-            <a href="{% url 'home' %}" style="color: white; text-decoration: underline; margin-left: 15px;">Limpiar Búsqueda</a>
+            <a href="{% url 'home' %}">Limpiar Búsqueda</a>
         </div>
         {% else %}
         <div class="search-banner error">
             <span>⚠️ No se encontraron herramientas que coincidan con "{{ query }}".</span>
             <span>💡 Sugerencia: Revisa si el nombre o código está bien escrito.</span>
-            <a href="{% url 'home' %}" style="color: white; text-decoration: underline; margin-left: 15px;">Ver Todo</a>
+            <a href="{% url 'home' %}">Ver Todo</a>
         </div>
         {% endif %}
     {% endif %}
@@ -439,11 +95,11 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 10%;">CÓDIGO</th>
-                        <th style="width: 35%;">MATERIAL / HERRAMIENTA</th>
-                        <th style="width: 15%;">CONDICIÓN</th>
-                        <th style="width: 18%;">ESTADO DISPONIBILIDAD</th>
-                        <th style="width: 22%;">ACCIONES</th>
+                        <th class="col-codigo">CÓDIGO</th>
+                        <th class="col-material">MATERIAL / HERRAMIENTA</th>
+                        <th class="col-estado">CONDICIÓN</th>
+                        <th class="col-disponibilidad">ESTADO DISPONIBILIDAD</th>
+                        <th class="col-acciones">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -499,11 +155,11 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 10%;">CÓDIGO</th>
-                        <th style="width: 35%;">MATERIAL / HERRAMIENTA</th>
-                        <th style="width: 15%;">CONDICIÓN</th>
-                        <th style="width: 18%;">ESTADO DISPONIBILIDAD</th>
-                        <th style="width: 22%;">ACCIONES</th>
+                        <th class="col-codigo">CÓDIGO</th>
+                        <th class="col-material">MATERIAL / HERRAMIENTA</th>
+                        <th class="col-estado">CONDICIÓN</th>
+                        <th class="col-disponibilidad">ESTADO DISPONIBILIDAD</th>
+                        <th class="col-acciones">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -559,11 +215,11 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 10%;">CÓDIGO</th>
-                        <th style="width: 35%;">MATERIAL / HERRAMIENTA</th>
-                        <th style="width: 15%;">CONDICIÓN</th>
-                        <th style="width: 18%;">ESTADO DISPONIBILIDAD</th>
-                        <th style="width: 22%;">ACCIONES</th>
+                        <th class="col-codigo">CÓDIGO</th>
+                        <th class="col-material">MATERIAL / HERRAMIENTA</th>
+                        <th class="col-estado">CONDICIÓN</th>
+                        <th class="col-disponibilidad">ESTADO DISPONIBILIDAD</th>
+                        <th class="col-acciones">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -619,11 +275,11 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 10%;">CÓDIGO</th>
-                        <th style="width: 35%;">MATERIAL / HERRAMIENTA</th>
-                        <th style="width: 15%;">CONDICIÓN</th>
-                        <th style="width: 18%;">ESTADO DISPONIBILIDAD</th>
-                        <th style="width: 22%;">ACCIONES</th>
+                        <th class="col-codigo">CÓDIGO</th>
+                        <th class="col-material">MATERIAL / HERRAMIENTA</th>
+                        <th class="col-estado">CONDICIÓN</th>
+                        <th class="col-disponibilidad">ESTADO DISPONIBILIDAD</th>
+                        <th class="col-acciones">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -679,11 +335,11 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 10%;">CÓDIGO</th>
-                        <th style="width: 35%;">MATERIAL / HERRAMIENTA</th>
-                        <th style="width: 15%;">CONDICIÓN</th>
-                        <th style="width: 18%;">ESTADO DISPONIBILIDAD</th>
-                        <th style="width: 22%;">ACCIONES</th>
+                        <th class="col-codigo">CÓDIGO</th>
+                        <th class="col-material">MATERIAL / HERRAMIENTA</th>
+                        <th class="col-estado">CONDICIÓN</th>
+                        <th class="col-disponibilidad">ESTADO DISPONIBILIDAD</th>
+                        <th class="col-acciones">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -735,15 +391,15 @@
     <!-- Modal Reportar Falla/Novedad -->
     <div class="modal-nota" id="modalNota">
         <div class="modal-nota-content">
-            <h3 style="margin-top: 0; color: #3b82f6;">📝 Reportar Novedad o Falla</h3>
-            <p id="modalToolName" style="font-weight: bold; color: #fbbf24;"></p>
+            <h3>📝 Reportar Novedad o Falla</h3>
+            <p id="modalToolName"></p>
             <form id="formNota" method="POST" action="">
                 {% csrf_token %}
-                <label style="font-size: 13px; font-weight: bold;">Descripción del problema o estado:</label>
+                <label>Descripción del problema o estado:</label>
                 <textarea name="detalle" rows="4" required placeholder="Ej: Se observa desgaste en la punta de corte, requiere afilado antes de la próxima salida..."></textarea>
-                <div style="display: flex; gap: 10px; margin-top: 15px;">
-                    <button type="submit" style="flex: 2; background: #2563eb; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer;">Guardar Novedad</button>
-                    <button type="button" onclick="closeNotaModal()" style="flex: 1; background: #475569; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer;">Cancelar</button>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-save">Guardar Novedad</button>
+                    <button type="button" onclick="closeNotaModal()" class="btn-cancel">Cancelar</button>
                 </div>
             </form>
         </div>
@@ -751,130 +407,38 @@
 
     <!-- Modal Confirmar Eliminar Nota -->
     <div class="modal-nota" id="modalConfirmDelete">
-        <div class="modal-nota-content" style="max-width: 380px; text-align: center;">
-            <div style="font-size: 40px; margin-bottom: 10px;">⚠️</div>
-            <h3 style="margin: 0 0 8px 0; color: #ef4444;">Eliminar novedad</h3>
-            <p style="color: #94a3b8; font-size: 14px; margin: 0 0 20px 0;">¿Estás seguro de que querés eliminar esta novedad? Esta acción no se puede deshacer.</p>
-            <div style="display: flex; gap: 10px;">
-                <button id="btnConfirmDelete" style="flex: 1; background: #c1121f; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer;">Eliminar</button>
-                <button onclick="closeConfirmDelete()" style="flex: 1; background: #475569; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer;">Cancelar</button>
+        <div class="modal-nota-content confirm">
+            <div class="icon">⚠️</div>
+            <h3>Eliminar novedad</h3>
+            <p>¿Estás seguro de que querés eliminar esta novedad? Esta acción no se puede deshacer.</p>
+            <div class="modal-actions">
+                <button id="btnConfirmDelete" class="btn-confirm">Eliminar</button>
+                <button onclick="closeConfirmDelete()" class="btn-cancel">Cancelar</button>
             </div>
         </div>
     </div>
 
     {% if page_obj.has_other_pages %}
-    <div style="display: flex; justify-content: center; gap: 6px; margin: 30px 0;">
+    <div class="pagination">
         {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}{% if query %}&buscar={{ query }}{% endif %}" style="padding: 8px 14px; background: #1c1c1c; color: white; border: 1px solid #333; border-radius: 6px; text-decoration: none; font-weight: 600; transition: 0.2s;">&#9664; Anterior</a>
+        <a href="?page={{ page_obj.previous_page_number }}{% if query %}&buscar={{ query }}{% endif %}">&#9664; Anterior</a>
         {% endif %}
 
         {% for num in page_obj.paginator.page_range %}
             {% if page_obj.number == num %}
-            <span style="padding: 8px 14px; background: #c1121f; color: white; border-radius: 6px; font-weight: 700;">{{ num }}</span>
+            <span class="current">{{ num }}</span>
             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-            <a href="?page={{ num }}{% if query %}&buscar={{ query }}{% endif %}" style="padding: 8px 14px; background: #1c1c1c; color: white; border: 1px solid #333; border-radius: 6px; text-decoration: none; font-weight: 600; transition: 0.2s;">{{ num }}</a>
+            <a href="?page={{ num }}{% if query %}&buscar={{ query }}{% endif %}">{{ num }}</a>
             {% endif %}
         {% endfor %}
 
         {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}{% if query %}&buscar={{ query }}{% endif %}" style="padding: 8px 14px; background: #1c1c1c; color: white; border: 1px solid #333; border-radius: 6px; text-decoration: none; font-weight: 600; transition: 0.2s;">Siguiente &#9654;</a>
+        <a href="?page={{ page_obj.next_page_number }}{% if query %}&buscar={{ query }}{% endif %}">Siguiente &#9654;</a>
         {% endif %}
     </div>
     {% endif %}
 
-    <footer style="text-align: center; margin-top: 30px; padding: 20px; color: #888;">
+    <footer class="site-footer">
         <p>&copy; 2026 Sistema de Gestión de Cuartel de Bomberos. Todos los derechos reservados.</p>
     </footer>
-{% endblock %}
-
-{% block extra_js %}
-    // === RELOJ EN TIEMPO REAL ===
-    document.addEventListener("DOMContentLoaded", () => {
-        function actualizarReloj() {
-            const ahora = new Date();
-            const dia = String(ahora.getDate()).padStart(2, '0');
-            const mes = String(ahora.getMonth() + 1).padStart(2, '0');
-            const anio = ahora.getFullYear();
-            const horas = String(ahora.getHours()).padStart(2, '0');
-            const minutos = String(ahora.getMinutes()).padStart(2, '0');
-            const segundos = String(ahora.getSeconds()).padStart(2, '0');
-
-            const relojEl = document.getElementById("reloj");
-            if (relojEl) {
-                relojEl.textContent = `${dia}/${mes}/${anio} - ${horas}:${minutos}:${segundos}`;
-            }
-        }
-        setInterval(actualizarReloj, 1000);
-        actualizarReloj();
-    });
-
-    // === MODAL DE NOTAS ===
-    function openNotaModal(id, nombre) {
-        document.getElementById('modalToolName').innerText = `Herramienta: ${nombre}`;
-        document.getElementById('formNota').action = `/herramienta/${id}/nota/`;
-        document.getElementById('modalNota').style.display = 'flex';
-    }
-
-    function closeNotaModal() {
-        document.getElementById('modalNota').style.display = 'none';
-    }
-
-    // === MODAL CONFIRMAR ELIMINAR NOTA ===
-    let formToDelete = null;
-
-    function confirmDeleteNota(form) {
-        formToDelete = form;
-        document.getElementById('modalConfirmDelete').style.display = 'flex';
-        return false;
-    }
-
-    function closeConfirmDelete() {
-        document.getElementById('modalConfirmDelete').style.display = 'none';
-        formToDelete = null;
-    }
-
-    document.getElementById('btnConfirmDelete').addEventListener('click', function() {
-        if (formToDelete) {
-            formToDelete.submit();
-        }
-    });
-
-    // === FILTROS POR UNIDAD ===
-    const grupos = document.querySelectorAll('#inventario-completo > div');
-    const btns = document.querySelectorAll('#seccion-filtros button');
-
-    function filtrarUnidad(grupo) {
-        grupos.forEach(g => {
-            g.style.display = (grupo === 'todos' || g.id === 'grupo-' + grupo) ? 'block' : 'none';
-        });
-        btns.forEach(b => {
-            b.style.background = '';
-            b.style.color = '';
-            b.style.borderColor = '';
-        });
-        const idBtn = grupo === 'todos' ? 'btn-todos' : 'btn-' + grupo;
-        const btnActivo = document.getElementById(idBtn);
-        if (btnActivo) {
-            btnActivo.style.background = '#c1121f';
-            btnActivo.style.color = 'white';
-            btnActivo.style.borderColor = '#c1121f';
-        }
-    }
-
-    btns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const mapa = {
-                'btn-todos': 'todos',
-                'btn-estructural': 'estructural',
-                'btn-rescate': 'rescate',
-                'btn-forestal': 'forestal',
-                'btn-cisterna': 'cisterna',
-                'btn-deposito': 'deposito'
-            };
-            filtrarUnidad(mapa[this.id] || 'todos');
-        });
-    });
-
-    // Marcar "Todos" como activo al cargar
-    filtrarUnidad('todos');
 {% endblock %}
