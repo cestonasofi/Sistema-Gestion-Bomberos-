@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
 
 # Carga las variables de entorno
 load_dotenv()
@@ -59,15 +60,11 @@ WSGI_APPLICATION = 'central_gestion.wsgi.application'
 
 # Database
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'central_bomberos_db'),
-        'USER': os.getenv('DB_USER', 'admin_bombero'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'ClaveSegura123!'),
-        'HOST': os.getenv('DB_HOST', 'db'),
-        'PORT': os.getenv('DB_PORT', '5432'),
-        'OPTIONS': {'sslmode': 'require'},
-    }
+    'default': dj_database_url.config(
+        default=f"postgres://{os.getenv('DB_USER', 'admin_bombero')}:{os.getenv('DB_PASSWORD', 'ClaveSegura123!')}@{os.getenv('DB_HOST', 'db')}:{os.getenv('DB_PORT', '5432')}/{os.getenv('DB_NAME', 'central_bomberos_db')}",
+        conn_max_age=600,
+        ssl_require=True,
+    )
 }
 
 # User Model Customization

@@ -5,7 +5,6 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Instalar dependencias del sistema para PostgreSQL
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     gcc \
@@ -16,4 +15,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app/
 
-CMD sh -c "python manage.py collectstatic --noinput && python manage.py migrate && python manage.py poblar_cuartel && python manage.py crear_cuentas && python manage.py runserver 0.0.0.0:${PORT:-8000}"
+RUN chmod +x entrypoint.sh
+
+EXPOSE 8000
+
+CMD ["./entrypoint.sh"]
