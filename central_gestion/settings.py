@@ -13,6 +13,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-cambiar-en-produccion')
 DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'https://*.onrender.com').split(',')
 
 INSTALLED_APPS = [
     'inventario',
