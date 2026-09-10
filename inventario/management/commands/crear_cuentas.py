@@ -1,44 +1,24 @@
-import os
-
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from inventario.models import UsuarioBombero
 
 
 class Command(BaseCommand):
-    help = (
-        "Crea o actualiza las cuentas de jefe, bombero y admin. "
-        "Las contraseñas se leen del archivo .env (JEFE_PASSWORD, BOMBERO_PASSWORD, ADMIN_PASSWORD)."
-    )
+    help = "Crea o actualiza las cuentas de acceso."
 
     def handle(self, *args, **options):
-        jefe_pass = os.getenv('JEFE_PASSWORD', '')
-        bombero_pass = os.getenv('BOMBERO_PASSWORD', '')
-        admin_pass = os.getenv('ADMIN_PASSWORD', '')
-
-        faltantes = []
-        if not jefe_pass:
-            faltantes.append('JEFE_PASSWORD')
-        if not bombero_pass:
-            faltantes.append('BOMBERO_PASSWORD')
-        if not admin_pass:
-            faltantes.append('ADMIN_PASSWORD')
-        if faltantes:
-            raise CommandError(
-                'Faltan definir en el archivo .env: ' + ', '.join(faltantes)
-            )
+        PASS = 'bombero123'
 
         self.stdout.write("--- CREANDO CUENTAS DE ACCESO ---")
 
-        # 1. Usuario Jefe (acceso total)
-        # Borrar usuario 'jefe' si existe
+        # 1. Sofia - Jefe (superusuario)
         try:
-            viejo_jefe = UsuarioBombero.objects.get(username='jefe')
-            viejo_jefe.delete()
+            viejo = UsuarioBombero.objects.get(username='jefe')
+            viejo.delete()
             self.stdout.write(self.style.WARNING('[OK] Usuario "jefe" eliminado.'))
         except UsuarioBombero.DoesNotExist:
             pass
 
-        u_jefe, _ = UsuarioBombero.objects.get_or_create(
+        u_sofia, _ = UsuarioBombero.objects.get_or_create(
             username='sofia',
             defaults={
                 'email': 'sofia@cuartel.gob',
@@ -49,15 +29,15 @@ class Command(BaseCommand):
                 'is_superuser': True,
             },
         )
-        u_jefe.set_password(jefe_pass)
-        u_jefe.rol = 'jefe'
-        u_jefe.is_approved = True
-        u_jefe.is_staff = True
-        u_jefe.is_superuser = True
-        u_jefe.save()
-        self.stdout.write(self.style.SUCCESS('[OK] Cuenta Jefe "sofia" creada/actualizada.'))
+        u_sofia.set_password(PASS)
+        u_sofia.rol = 'jefe'
+        u_sofia.is_approved = True
+        u_sofia.is_staff = True
+        u_sofia.is_superuser = True
+        u_sofia.save()
+        self.stdout.write(self.style.SUCCESS('[OK] sofia / bombero123'))
 
-        # 2. Usuario Bombero Rescatista
+        # 2. Bombero
         u_bombero, _ = UsuarioBombero.objects.get_or_create(
             username='bombero',
             defaults={
@@ -67,13 +47,13 @@ class Command(BaseCommand):
                 'is_approved': True,
             },
         )
-        u_bombero.set_password(bombero_pass)
+        u_bombero.set_password(PASS)
         u_bombero.rol = 'rescatista'
         u_bombero.is_approved = True
         u_bombero.save()
-        self.stdout.write(self.style.SUCCESS('[OK] Cuenta Bombero creada/actualizada.'))
+        self.stdout.write(self.style.SUCCESS('[OK] bombero / bombero123'))
 
-        # 3. Usuario Admin (superusuario)
+        # 3. Admin
         u_admin, _ = UsuarioBombero.objects.get_or_create(
             username='admin',
             defaults={
@@ -85,7 +65,7 @@ class Command(BaseCommand):
                 'is_superuser': True,
             },
         )
-        u_admin.set_password(admin_pass)
+        u_admin.set_password(PASS)
         u_admin.is_approved = True
         u_admin.save()
-        self.stdout.write(self.style.SUCCESS('[OK] Cuenta Admin creada/actualizada.'))
+        self.stdout.write(self.style.SUCCESS('[OK] admin / bombero123'))
