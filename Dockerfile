@@ -16,4 +16,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app/
 
-CMD sh -c "python manage.py migrate && python manage.py poblar_cuartel && python manage.py crear_cuentas && python manage.py runserver 0.0.0.0:${PORT:-8000}"
+CMD sh -c "python manage.py collectstatic --noinput && python manage.py migrate && python manage.py poblar_cuartel && python manage.py crear_cuentas && python manage.py runserver 0.0.0.0:${PORT:-8000}"
