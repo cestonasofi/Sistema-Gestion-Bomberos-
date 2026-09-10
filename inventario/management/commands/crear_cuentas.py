@@ -30,10 +30,18 @@ class Command(BaseCommand):
         self.stdout.write("--- CREANDO CUENTAS DE ACCESO ---")
 
         # 1. Usuario Jefe (acceso total)
+        # Borrar usuario 'jefe' si existe
+        try:
+            viejo_jefe = UsuarioBombero.objects.get(username='jefe')
+            viejo_jefe.delete()
+            self.stdout.write(self.style.WARNING('[OK] Usuario "jefe" eliminado.'))
+        except UsuarioBombero.DoesNotExist:
+            pass
+
         u_jefe, _ = UsuarioBombero.objects.get_or_create(
-            username='jefe',
+            username='sofia',
             defaults={
-                'email': 'jefe@cuartel.gob',
+                'email': 'sofia@cuartel.gob',
                 'documento': '22222222',
                 'rol': 'jefe',
                 'is_approved': True,
@@ -47,7 +55,7 @@ class Command(BaseCommand):
         u_jefe.is_staff = True
         u_jefe.is_superuser = True
         u_jefe.save()
-        self.stdout.write(self.style.SUCCESS('[OK] Cuenta Jefe creada/actualizada.'))
+        self.stdout.write(self.style.SUCCESS('[OK] Cuenta Jefe "sofia" creada/actualizada.'))
 
         # 2. Usuario Bombero Rescatista
         u_bombero, _ = UsuarioBombero.objects.get_or_create(
